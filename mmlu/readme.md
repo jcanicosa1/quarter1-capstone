@@ -1,7 +1,7 @@
 # How to run
 
 ## Setup
-1. Install (ollama)[https://ollama.com], no need to download models
+1. Install [ollama](https://ollama.com), no need to download models
 1. `pip install -r requirements.txt`
 1. Edit yml to set `num_gpu` to number of GPUs (set to 1 for Apple M or CPU only)
 
