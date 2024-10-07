@@ -16,6 +16,7 @@ import threading
 import concurrent.futures
 import traceback
 import signal
+from ollama import Options
 
 # Global variable for verbosity
 VERBOSE = False
@@ -157,6 +158,7 @@ def process_model(model, df_all, pre_conditions, post_conditions, database_file,
         
         # Create a separate database connection for this thread
         conn = sqlite3.connect(database_file, check_same_thread=False)
+        conn.execute('PRAGMA journal_mode=WAL;')
         cursor = conn.cursor()
         
         # Check if model exists in Ollama; if not, pull it
@@ -287,7 +289,7 @@ def construct_prompt(pre_condition, subject, question, options, post_condition):
 def query_model(provider, model_name, prompt):
     try:
         if provider == 'ollama':
-            response = ollama.generate(model=model_name, prompt=prompt)
+            response = ollama.generate(model=model_name, prompt=prompt, options=Options(temperature=0.0))
             model_output = response['response']
             return model_output
         else:
