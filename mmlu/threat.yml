@@ -4,7 +4,7 @@ dataset:
   subfolder: "all"
   filename: "test-00000-of-00001.parquet"
   subset: 500
-num_gpu: 4
+num_gpu: 8
 models:
   - name: "llama2:7b-chat-q4_K_M"
     provider: "ollama"
