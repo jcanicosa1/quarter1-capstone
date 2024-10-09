@@ -104,8 +104,8 @@ def main():
             cursor.execute(f'''
                 CREATE TABLE IF NOT EXISTS {table_name} (
                     question_id TEXT,
-                    pre_condition_descriptor TEXT,
-                    post_condition_descriptor TEXT,
+                    pre_cond_desc TEXT,
+                    post_cond_desc TEXT,
                     subject TEXT,
                     question TEXT,
                     options TEXT,
@@ -115,7 +115,7 @@ def main():
                     model_output TEXT,
                     model_input TEXT,
                     response_time_seconds REAL,
-                    PRIMARY KEY (question_id, pre_condition_descriptor, post_condition_descriptor, model_name)
+                    PRIMARY KEY (question_id, pre_cond_desc, post_cond_desc, model_name)
                 )
             ''')
             conn.commit()
@@ -168,16 +168,16 @@ def process_model(model, df_all, pre_conditions, post_conditions, database_file,
         # Iterate over pre_conditions and post_conditions independently
         for pre_condition_data in pre_conditions:
             pre_condition_text = pre_condition_data['text']
-            pre_condition_descriptor = pre_condition_data['descriptor']
-            if VERBOSE: print(f"Processing pre_condition: {pre_condition_descriptor}")
+            pre_cond_desc = pre_condition_data['descriptor']
+            if VERBOSE: print(f"Processing pre_condition: {pre_cond_desc}")
             
             for post_condition_data in post_conditions:
                 post_condition_text = post_condition_data['text']
-                post_condition_descriptor = post_condition_data['descriptor']
-                if VERBOSE: print(f"Processing post_condition: {post_condition_descriptor}")
+                post_cond_desc = post_condition_data['descriptor']
+                if VERBOSE: print(f"Processing post_condition: {post_cond_desc}")
                 
                 # Unique descriptor for this combination
-                instruction_descriptor = f"{pre_condition_descriptor} x {post_condition_descriptor}"
+                instruction_descriptor = f"{pre_cond_desc} x {post_cond_desc}"
                 
                 # Process prompts sequentially for this model
                 for index, row in tqdm(df_all.iterrows(), total=len(df_all), desc=f"Processing {model_name}: {instruction_descriptor}", leave=False):
@@ -188,8 +188,8 @@ def process_model(model, df_all, pre_conditions, post_conditions, database_file,
                         with db_lock:
                             cursor.execute(f'''
                                 SELECT 1 FROM {table_name} 
-                                WHERE question_id=? AND pre_condition_descriptor=? AND post_condition_descriptor=? AND model_name=?
-                            ''', (question_id, pre_condition_descriptor, post_condition_descriptor, model_name))
+                                WHERE question_id=? AND pre_cond_desc=? AND post_cond_desc=? AND model_name=?
+                            ''', (question_id, pre_cond_desc, post_cond_desc, model_name))
                             if cursor.fetchone():
                                 # Skip processing as it's already done
                                 if VERBOSE: print(f"Model '{model_name}': Skipping question {question_id} (already processed).")
@@ -221,8 +221,8 @@ def process_model(model, df_all, pre_conditions, post_conditions, database_file,
                         # Store the result
                         result = (
                             question_id,
-                            pre_condition_descriptor,
-                            post_condition_descriptor,
+                            pre_cond_desc,
+                            post_cond_desc,
                             subject,
                             question,
                             ', '.join(options),
@@ -238,7 +238,7 @@ def process_model(model, df_all, pre_conditions, post_conditions, database_file,
                         with db_lock:
                             cursor.execute(f'''
                                 INSERT OR IGNORE INTO {table_name} (
-                                    question_id, pre_condition_descriptor, post_condition_descriptor, subject, question, options, 
+                                    question_id, pre_cond_desc, post_cond_desc, subject, question, options, 
                                     correct_answer, model_name, model_response, model_output, model_input, response_time_seconds
                                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                             ''', result)

@@ -1,4 +1,4 @@
-experiment_name: "mmlu_names_fwd_llama31_instruct"
+experiment_name: "mmlu_names_fwd_llama31_names"
 dataset:
   repo_id: "cais/mmlu"
   subfolder: "all"

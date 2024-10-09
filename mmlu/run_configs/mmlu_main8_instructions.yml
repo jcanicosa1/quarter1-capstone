@@ -1,12 +1,26 @@
-experiment_name: "mmlu_names_fwd_llama31_instruct"
+experiment_name: "mmlu_names_fwd_main8_instruct"
 dataset:
   repo_id: "cais/mmlu"
   subfolder: "all"
   filename: "test-00000-of-00001.parquet"
   subset: 1000
-num_gpu: 1
+num_gpu: 8
 models:
+  - name: "llama2:7b-chat-q4_K_M"
+    provider: "ollama"
+  - name: "llama3:8b-instruct-q4_K_M"
+    provider: "ollama"
   - name: "llama3.1:8b-instruct-q4_K_M"
+    provider: "ollama"
+  - name: "llama3.2:3b-instruct-q4_K_M"
+    provider: "ollama"
+  - name: "gemma2:9b-instruct-q4_K_M"
+    provider: "ollama"
+  - name: "qwen2.5:7b-instruct-q4_K_M"
+    provider: "ollama"
+  - name: "mistral:7b-instruct-v0.3-q4_K_M"
+    provider: "ollama"
+  - name: "mistral:7b-instruct-q4_K_M"
     provider: "ollama"
 pre_conditions:
   - text: "Answer with only a single letter. The following are multiple choice questions (with answers)."
