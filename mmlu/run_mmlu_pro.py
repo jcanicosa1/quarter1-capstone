@@ -80,7 +80,8 @@ def main():
             print(f"Subset: {subset}")
         
         # Generate output filename without timestamp to allow resuming
-        database_file = f"{experiment_name}.db"
+        database_file = f"data/{experiment_name}.db"
+        os.makedirs(os.path.dirname(database_file), exist_ok=True)
         table_name = config.get('table_name', 'results')
         if VERBOSE: print(f"Database file: {database_file}")
         if VERBOSE: print(f"Table name: {table_name}")
@@ -161,9 +162,9 @@ def process_model(model, df_all, pre_conditions, post_conditions, database_file,
         conn.execute('PRAGMA journal_mode=WAL;')
         cursor = conn.cursor()
         
-        # Check if model exists in Ollama; if not, pull it - not needed
-        #if not check_model_exists(provider, model_name):
-        #    pull_model(provider, model_name)
+        # Check if model exists in Ollama; if not, pull it
+        if not check_model_exists(provider, model_name):
+            pull_model(provider, model_name)
         
         # Iterate over pre_conditions and post_conditions independently
         for pre_condition_data in pre_conditions:
