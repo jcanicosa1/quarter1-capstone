@@ -1,4 +1,4 @@
-experiment_name: "mmlu_names_fwd_main8_instruct"
+experiment_name: "mmlupro_main8_instructions_post2"
 dataset:
   repo_id: "TIGER-Lab/MMLU-Pro"
   subfolder: "data"
