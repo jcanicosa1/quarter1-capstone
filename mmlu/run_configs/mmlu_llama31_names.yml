@@ -3,7 +3,7 @@ dataset:
   repo_id: "cais/mmlu"
   subfolder: "all"
   filename: "test-00000-of-00001.parquet"
-  subset: 1000
+  subset: 100
 num_gpu: 1
 models:
   - name: "llama3.1:8b-instruct-q4_K_M"
