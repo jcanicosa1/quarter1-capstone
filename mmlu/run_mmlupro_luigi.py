@@ -15,7 +15,7 @@ import sys
 import logging
 from tqdm.auto import tqdm
 from huggingface_hub import hf_hub_download
-import ollama  # Ensure this is installed
+import ollama 
 from ollama import Options
 
 # Global variables for database and logging
@@ -32,7 +32,7 @@ def setup_logging(verbose):
         datefmt='%H:%M:%S',
     )
     # Suppress logs from third-party libraries
-    for logger_name in ['urllib3', 'requests', 'httpx', 'ollama', 'asyncio']:
+    for logger_name in ['urllib3', 'requests', 'httpx', 'ollama', 'asyncio', 'luigi']:
         logging.getLogger(logger_name).setLevel(logging.WARNING)
 
 def setup_database(db_file, table_name):
