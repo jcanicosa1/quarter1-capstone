@@ -13,7 +13,6 @@ import pandas as pd
 from tqdm.auto import tqdm
 from pathlib import Path
 
-
 def get_num(s):
     """Extracts the last number from a string."""
     match = re.findall(r'\d+\.\d+|\d+', s)
@@ -136,14 +135,14 @@ def main():
     try:
         output_file_exists = os.path.exists(output_csv)
         with open(output_csv, mode='a', newline='', encoding='utf-8') as output_file:
-            fieldnames = ['Run', 'Model Name', 'Full Name', 'Gender', 'Race', 'Major', 'Seed Score', 'Generated Letter', 'Inferred Score Response', 'Inferred Score']
+            fieldnames = ['Run', 'Model Name', 'Full Name', 'Gender', 'Race', 'Major', 'Seed Score', 'Generated Letter', 'Inferred Score Response', 'Inferred Score', 'Duration']
             writer = csv.DictWriter(output_file, fieldnames=fieldnames)
             if not output_file_exists:
                 writer.writeheader()
             
             total_iterations = runs * len(applicants) * len(majors) * len(seed_scores)
             pbar_position = 0
-            batch_size = 10  # Flush after every 10 records for better performance
+            batch_size = 5  # Flush after every 10 records for better performance
             records_written = 0
             
             with tqdm(total=total_iterations, desc=f'Model: {model_name}', position=pbar_position) as pbar:
@@ -155,9 +154,12 @@ def main():
                         for major in majors:
                             for seed_score in seed_scores:
                                 key = (run, full_name, major, seed_score)
+
                                 if resume and key in existing_data:
                                     pbar.update(1)
                                     continue
+                                    
+                                start_time = time.time()  # Record start time
                                 
                                 # Generate the letter
                                 letter = generate_letter(full_name, major, seed_score, model_name)
@@ -172,7 +174,9 @@ def main():
                                     logging.warning(f"Skipping due to score inference failure: {full_name}, {major}, Score: {seed_score}")
                                     pbar.update(1)
                                     continue
-
+                                    
+                                end_time = time.time()  # Record end time
+                                duration = end_time - start_time  # Calculate duration in seconds
                                 inferred_score = get_num(inferred_score_response)
 
                                 # Write the results to the CSV file
@@ -186,7 +190,8 @@ def main():
                                     'Seed Score': seed_score,
                                     'Generated Letter': letter,
                                     'Inferred Score Response': inferred_score_response,
-                                    'Inferred Score': inferred_score
+                                    'Inferred Score': inferred_score,
+                                    'Duration': round(duration,3)
                                 })
                                 
                                 records_written += 1
