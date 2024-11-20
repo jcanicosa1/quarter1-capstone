@@ -67,15 +67,14 @@ def setup_database(db_file, table_name):
             trial INTEGER,
             prompt TEXT,
             response TEXT,
-            major TEXT,
             gender_p TEXT,
-            school TEXT,
-            PRIMARY KEY (model_name, trial, major, gender_p, school)
+            income INTEGER,
+            gpa FLOAT,
+            PRIMARY KEY (model_name, trial, gender_p, income, gpa)
         )
     ''')
     conn.commit()
     conn.close()
-
 class LoadConfig(luigi.Task):
     config_file = luigi.Parameter()
 
@@ -101,14 +100,14 @@ class DatabaseTarget(luigi.Target):
         cursor.execute(
             f'''
             SELECT 1 FROM {self.table_name}
-            WHERE model_name = ? AND trial = ? AND major = ? AND gender_p = ? AND school = ?
+            WHERE model_name = ? AND trial = ? AND gender_p = ? AND income = ? AND gpa = ?
             ''',
             (
                 self.model_name,
                 self.trial,
-                self.condition['major'],
                 self.condition['gender_p'],
-                self.condition['school']
+                self.condition['income'],
+                self.condition['gpa']
             )
         )
         result = cursor.fetchone()
@@ -180,7 +179,7 @@ class RunExperimentTask(luigi.Task):
         data = (
             timestamp, experiment_name, model_name, provider, self.trial,
             prompt, response_content,
-            self.condition['major'], self.condition['gender_p'], self.condition['school']
+            self.condition['name'], self.condition['income'], self.condition['gpa']
         )
 
         # Insert into database
@@ -188,7 +187,7 @@ class RunExperimentTask(luigi.Task):
             insert_query = f'''
             INSERT OR IGNORE INTO {table_name} (
                 timestamp, experiment_name, model_name, provider, trial, prompt, response,
-                major, gender_p, school
+                gender_p, income, gpa
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             '''
             cursor.execute(insert_query, data)
