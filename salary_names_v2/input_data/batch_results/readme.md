@@ -1,0 +1,1 @@
+`input_data/batch_results` - where the .jsonl results from OpenAI (or vllm) need to be stored to be processed by `step2_mergeall.ipynb`. You should rename each .jsonl results file (downloaded from batchwizard, vllm, etc) to `{prompt_name}_{model_version}_output.jsonl`.
