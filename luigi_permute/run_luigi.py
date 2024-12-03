@@ -179,7 +179,7 @@ class RunExperimentTask(luigi.Task):
         data = (
             timestamp, experiment_name, model_name, provider, self.trial,
             prompt, response_content,
-            self.condition['name'], self.condition['income'], self.condition['gpa']
+            self.condition['gender_p'], self.condition['income'], self.condition['gpa']
         )
 
         # Insert into database

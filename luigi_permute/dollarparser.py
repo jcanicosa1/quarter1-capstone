@@ -8,6 +8,33 @@ import numpy as np
 import pandas as pd
 import re
 
+def parse_decision_outcome(text) -> str:
+    """
+    Function to extract a decision outcome ("accept", "waitlist", or "reject") from a string.
+    Searches for these specific terms in the text and returns the matched outcome.
+    
+    Parameters:
+    text (str): The input string to search for decision outcomes.
+    
+    Returns:
+    str: The decision outcome ("accept", "waitlist", "reject") if found, otherwise None.
+    """
+    if pd.isna(text):
+        return None
+
+    text = text.lower().strip()
+    
+    # Define valid decision outcomes
+    decision_keywords = ["accept", "waitlist", "reject"]
+    
+    # Search for decision keywords in the text
+    for keyword in decision_keywords:
+        if keyword in text:
+            return keyword
+    
+    return None
+
+
 def parse_dollar_amount(x) -> int:
     """
     Function to extract dollar amounts from a string and return their average.
