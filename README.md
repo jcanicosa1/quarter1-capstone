@@ -2,8 +2,8 @@
 
 - __This project template demonstrates__: linear regression analysis, chi-squared testing, t-test, ROC curve and AUC (Area Under the Curve) to visualize and test my model.
 
-This project examines the most influencial factors when selecting students for admission. This project explores the question: When using ChatGPT for college admissions assistance, do it exhibit demographic biases that illegitimately favor certain groups over others?
-The Null Hypotheis: Male Anglo names with a high GPA and income have a highest chance of admission. 
+This project examines the most influencial factors when selecting students for admission. This project explores the question: When using ChatGPT for college admissions assistance, does it exhibit demographic biases that illegitimately favor certain groups over others?
+The Null Hypotheis: Male Anglo names with a high GPA and high income have a highest chance of admission. 
 
 ## Running the project
 
