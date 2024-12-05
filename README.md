@@ -7,12 +7,12 @@ The Null Hypotheis: Male Anglo names with a high GPA and income have a highest c
 
 ## Running the project
 
-The process is outlined in with Step 1: Prompt generator, Step 2: Merging the results, and lastly Step 3: Analysis. 
+The process is outlined in with Step 1: Prompt Generator, Step 2: Data Collection, and lastly Step 3: Analysis. 
 
 In Step 1, 33,600 inputs are created to put into OpenAI's model `gpt-4o-mini-2024-07-18`. Here, the different iterations of name, gender, income, and gpa and put together to create several prompts asking ChatGPT if each individual is either accepted, waitlisted, or declined.
 
-Before Step 2, I processed the output of Step 1 into OpenAI's model `gpt-4o-mini-2024-07-18` using batchwizard. 
+Before Step 2, I processed the output of Step 1 into ChatGPT using batchwizard. 
 
-The data cleaning process began in Step 2 by importing the new dataset with the results from ChatGPT in. 
+The data cleaning process began in Step 2 by importing collecting the results from ChatGPT into the dataset. 
 
-Step 3 contains the more data clean up, analysis, and results.
+Step 3 contains the more data clean up, analysis, and the final results.
